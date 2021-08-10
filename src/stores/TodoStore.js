@@ -46,7 +46,6 @@ export default Reflux.createStore({
         const key = this.todoList.length
         const todo = {key: '' + key, title:"nisse", description: "nasse", dueDate: date};
         console.log("new ttot ", todo)
-       // this.setState({todoList: todo})
        const message = {type: 'server/insert', data: todo}
        SocketStore.sendMessage(message)
     },
@@ -59,7 +58,6 @@ export default Reflux.createStore({
     sendDelete(selectedTodo) {
         const todoToDelete = this.todoList.find(listItem => {
             if (selectedTodo.key ===  listItem.key) {
-              //listItem[field] = value
               console.log("found value ", listItem.key)
               return true
             }
