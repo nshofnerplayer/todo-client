@@ -34,6 +34,8 @@ class Todo extends React.PureComponent {
                 resizable: true,
                 floatingFilter: true,
                 }}
+                pagination={true}
+                paginationAutoPageSize={true}
                 onGridReady={this.props.onGridReady}
                 rowSelection={'single'}
                 editType='fullRow'
