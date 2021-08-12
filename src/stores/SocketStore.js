@@ -1,4 +1,5 @@
 import Reflux from 'reflux'
+import TodoStore from './TodoStore';
 
 export default Reflux.createStore({
     //lines: [],
@@ -6,24 +7,30 @@ export default Reflux.createStore({
     
     init() {
         this.websocket = undefined;
-        this.wsUri = "ws://localhost:8080/TodoServer/todo";
+        this.wsUri = "ws://localhost:8080/todo-server/todo";
     },    
 
     openSocket() {
-        this.websocket = new WebSocket(this.wsUri)
-        
-        this.websocket.onerror = (event) => { 
-            console.log("onError: ", event) 
-        };
-        this.websocket.onopen = (event) => {
-            console.log("Here's some text that the server is urgently awaiting!");
-        };
-        this.websocket.onclose = (event) => {
-            console.log("WebSocket is closed now.", event);
-        };
-        this.websocket.onmessage = (event) => {
-            console.log(event.data);
-          }
+        if (!this.websocket) {
+            this.websocket = new WebSocket(this.wsUri)
+            
+            this.websocket.onerror = (event) => { 
+                console.log("onError: ", event) 
+            };
+            this.websocket.onopen = (event) => {
+                console.log("Socket open! ", event);
+            };
+            this.websocket.onclose = (event) => {
+                console.log("WebSocket is closed now.", event);
+                this.websocket = undefined
+            };
+            this.websocket.onmessage = (event) => {
+                console.log("socket store received ", event.data);
+                const message = JSON.parse(event.data);
+                TodoStore.onMessageReceived(message);
+            }
+        }
+
     },
 
     sendMessage(message) {
@@ -33,7 +40,9 @@ export default Reflux.createStore({
     },
     
     closeSocket() {
+        console.log("close socket")
         if (this.websocket) {
+            console.log("close socket2")
             this.websocket.close();
         }
     }
