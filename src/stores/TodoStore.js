@@ -41,7 +41,7 @@ export default Reflux.createStore({
     },
 
     sendInsertTodo() {
-        const date = moment(new Date()).format('YYYY-MM-DD')//format('L');
+        const date = moment(new Date()).format('YYYY-MM-DD');
         //key should normally be a databse id but creating a random key here
         const key = Math.floor(Math.random() * 100000);
         const todo = {key: '' + key, title: "title", description: "description", dueDate: date};
