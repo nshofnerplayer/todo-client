@@ -1,8 +1,8 @@
-import React from 'react'
+import React from 'react';
 import {AgGridColumn, AgGridReact} from 'ag-grid-react';
 import 'ag-grid-community/dist/styles/ag-grid.css';
 import 'ag-grid-community/dist/styles/ag-theme-alpine.css';
-import moment from 'moment'
+import moment from 'moment';
 
 class Todo extends React.PureComponent {
 
@@ -17,7 +17,6 @@ class Todo extends React.PureComponent {
     }
 
    render () {
-       console.log("render ", this.props)
        return (
         <div>
             <button onClick={this.props.addTodo}>Add todo</button>  
@@ -37,16 +36,13 @@ class Todo extends React.PureComponent {
                 editType='fullRow'
                 rowData={this.props.todoList}>
                 <AgGridColumn filter={"agTextColumnFilter"} sortable={true} valueSetter={(obj) => {
-                    console.log("setter new value ", obj)
-                    this.props.updateTodo(obj.data.key, obj.colDef.field, obj.newValue)
+                    this.props.updateTodo(obj.data.key, obj.colDef.field, obj.newValue);
                 }} editable={true} field="title"></AgGridColumn>
                 <AgGridColumn filter={"agTextColumnFilter"} sortable={true} valueSetter={(obj) => {
-                    console.log("setter new value ", obj)
-                    this.props.updateTodo(obj.data.key, obj.colDef.field, obj.newValue)
+                    this.props.updateTodo(obj.data.key, obj.colDef.field, obj.newValue);
                 }} editable={true} field="description"></AgGridColumn>
                 <AgGridColumn filter={"agTextColumnFilter"} sortable={true} valueSetter={(obj) => {
-                    console.log("setter new value ", obj)
-                    this.props.updateTodo(obj.data.key, obj.colDef.field, obj.newValue)
+                    this.props.updateTodo(obj.data.key, obj.colDef.field, obj.newValue);
                 }}
                 editable={true} field="dueDate"
                 comparator={this.dateComparator}
