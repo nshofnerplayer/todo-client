@@ -1,71 +1,65 @@
-import Reflux from 'reflux'
+import Reflux from 'reflux';
 import SocketStore from './SocketStore';
 import moment from 'moment';
 
 export default Reflux.createStore({
     
     init() {
-        this.todoList = []
+        this.todoList = [];
     }, 
     
     getTodoList() {
-        console.log("get todo list: ", this.todoList)
         return this.todoList;
     },
 
     onMessageReceived(message) {
         switch (message.type) {
             case 'server/insert':
-                console.log("todo stroe receved ", message.data)
                 this.todoList = [...this.todoList, message.data];
-                console.log("todo list: ", this.todoList)
-                this.trigger("todoInserted")
+                this.trigger("todoInserted");
                 break;
             case 'server/update':
-                
                 this.todoList = this.todoList.map(todo => {
                     if (todo.key === message.data.key) {
-                        const updatedTod = {...todo, ...message.data,}
-                        return updatedTod
+                        const updatedTodo = {...todo, ...message.data};
+                        return updatedTodo;
                     }
-                    return todo
+                    return todo;
                 })
-                this.trigger("todoUpdated")
+                this.trigger("todoUpdated");
                 break;
             case 'server/delete':
-                this.todoList = this.todoList.filter(todo => todo.key !== message.data.key)
-                this.trigger("todoDeleted")
+                this.todoList = this.todoList.filter(todo => todo.key !== message.data.key);
+                this.trigger("todoDeleted");
                 break;
-            case 'server/select':        
+            case 'server/receive':        
         }
     },
 
     sendInsertTodo() {
-        console.log("tesiting add")
-        const date = moment(new Date()).format('L')
-        const key = this.todoList.length
-        const todo = {key: '' + key, title:"nisse", description: "nasse", dueDate: date};
-        console.log("new ttot ", todo)
-       const message = {type: 'server/insert', data: todo}
-       SocketStore.sendMessage(message)
+        const date = moment(new Date()).format('L');
+        //key should normally be a databse id but creating a random key here
+        const key = Math.floor(Math.random() * 100000);
+        const todo = {key: '' + key, title: "title", description: "description", dueDate: date};
+        const message = {type: 'server/insert', data: todo};
+        SocketStore.sendMessage(message);
     },
 
     sendUpdateTodo(key ,field, value) {
-        const message = {type: 'server/update', data: {key: key,[field]: value}}
-        SocketStore.sendMessage(message)
+        const message = {type: 'server/update', data: {key: key, [field]: value}};
+        SocketStore.sendMessage(message);
     },
 
     sendDelete(selectedTodo) {
         const todoToDelete = this.todoList.find(listItem => {
             if (selectedTodo.key ===  listItem.key) {
-              console.log("found value ", listItem.key)
-              return true
+              return true;
             }
-            return false
+            return false;
           })
           if (todoToDelete) {
-            const message = {type: 'server/delete', data: {key: todoToDelete.key}}
-            SocketStore.sendMessage(message)
+            const message = {type: 'server/delete', data: {key: todoToDelete.key}};
+            SocketStore.sendMessage(message);
           }
     },
 
