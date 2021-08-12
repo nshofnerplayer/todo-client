@@ -1,8 +1,4 @@
-import logo from './logo.svg';
-import './App.css';
 import React from 'react'
-import moment from 'moment'
-import DatePicker from "react-datepicker";
 import Todo from './components/Todo'
 
 import SocketStore from './stores/SocketStore';
@@ -29,6 +25,8 @@ class App extends React.PureComponent {
         case 'todoUpdated':
         case  'todoDeleted': 
           this.setState({todoList: TodoStore.getTodoList()})
+          break;
+        default:  
       }
     }
                   

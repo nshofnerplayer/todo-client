@@ -36,7 +36,8 @@ export default Reflux.createStore({
                 this.todoList = this.todoList.filter(todo => todo.key !== message.data.key)
                 this.trigger("todoDeleted")
                 break;
-            case 'server/select':        
+            case 'server/receive':
+            default:            
         }
     },
 
