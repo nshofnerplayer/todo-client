@@ -1,5 +1,5 @@
-import React from 'react'
-import Todo from './components/Todo'
+import React from 'react';
+import Todo from './components/Todo';
 
 import SocketStore from './stores/SocketStore';
 import TodoStore from './stores/TodoStore';
@@ -16,7 +16,7 @@ class App extends React.PureComponent {
     }
 
     componentWillUnmount() {
-      this.unsubscribe()
+      this.unsubscribe();
     }
 
     todoStoreUpdated = (message) => {
@@ -24,7 +24,7 @@ class App extends React.PureComponent {
         case 'todoInserted':
         case 'todoUpdated':
         case  'todoDeleted': 
-          this.setState({todoList: TodoStore.getTodoList()})
+          this.setState({todoList: TodoStore.getTodoList()});
           break;
         default:  
       }
@@ -35,12 +35,11 @@ class App extends React.PureComponent {
     }
     
     updateTodo (key, field, value) {
-      TodoStore.sendUpdateTodo(key ,field, value)
+      TodoStore.sendUpdateTodo(key ,field, value);
     }
 
     deleteTodo = () => {
       if (this.gridApi) {
-        console.log("seleced ",this.gridApi.getSelectedRows());
         const selected = this.gridApi.getSelectedRows()
         if (selected.length > 0) {
           TodoStore.sendDelete(selected[0])
@@ -49,21 +48,16 @@ class App extends React.PureComponent {
     }
 
     onGridReady = (obj) => {
-      console.log("onGrid Ready ", obj)
       this.gridApi = obj.api
-      this.columnApi = obj.columnApi
-      console.log("api this", this.gridApi)
     } 
  
     render () {
-      console.log("render app ")
         return (
           <div
-          style={{
-            position: 'absolute', left: '50%', top: '50%',
-            transform: 'translate(-50%, -50%)'
-          }}
-          >
+            style={{
+              position: 'absolute', left: '50%', top: '50%',
+              transform: 'translate(-50%, -50%)'
+            }}>
             <Todo todoList={this.state.todoList} 
                   updateTodo={this.updateTodo} 
                   addTodo={this.addTodo} 

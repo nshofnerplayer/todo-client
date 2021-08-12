@@ -1,40 +1,37 @@
-import Reflux from 'reflux'
+import Reflux from 'reflux';
 import SocketStore from './SocketStore';
 import moment from 'moment';
 
 export default Reflux.createStore({
     
     init() {
-        this.todoList = []
+        this.todoList = [];
     }, 
     
     getTodoList() {
-        console.log("get todo list: ", this.todoList)
         return this.todoList;
     },
 
     onMessageReceived(message) {
         switch (message.type) {
             case 'server/insert':
-                console.log("todo stroe receved ", message.data)
                 this.todoList = [...this.todoList, message.data];
-                console.log("todo list: ", this.todoList)
-                this.trigger("todoInserted")
+                this.trigger("todoInserted");
                 break;
             case 'server/update':
                 
                 this.todoList = this.todoList.map(todo => {
                     if (todo.key === message.data.key) {
-                        const updatedTod = {...todo, ...message.data,}
-                        return updatedTod
+                        const updatedTod = {...todo, ...message.data};
+                        return updatedTod;
                     }
-                    return todo
+                    return todo;
                 })
-                this.trigger("todoUpdated")
+                this.trigger("todoUpdated");
                 break;
             case 'server/delete':
-                this.todoList = this.todoList.filter(todo => todo.key !== message.data.key)
-                this.trigger("todoDeleted")
+                this.todoList = this.todoList.filter(todo => todo.key !== message.data.key);
+                this.trigger("todoDeleted");
                 break;
             case 'server/receive':
             default:            
@@ -51,21 +48,15 @@ export default Reflux.createStore({
     },
 
     sendUpdateTodo(key ,field, value) {
-        const message = {type: 'server/update', data: {key: key,[field]: value}}
-        SocketStore.sendMessage(message)
+        const message = {type: 'server/update', data: {key: key,[field]: value}};
+        SocketStore.sendMessage(message);
     },
 
     sendDelete(selectedTodo) {
-        const todoToDelete = this.todoList.find(listItem => {
-            if (selectedTodo.key ===  listItem.key) {
-              console.log("found value ", listItem.key)
-              return true
-            }
-            return false
-          })
+        const todoToDelete = this.todoList.find(listItem => selectedTodo.key ===  listItem.key);
           if (todoToDelete) {
-            const message = {type: 'server/delete', data: {key: todoToDelete.key}}
-            SocketStore.sendMessage(message)
+            const message = {type: 'server/delete', data: {key: todoToDelete.key}};
+            SocketStore.sendMessage(message);
           }
     },
 
