@@ -7,17 +7,13 @@ import moment from 'moment'
 class Todo extends React.PureComponent {
 
     dateComparator = (date1, date2) => {
-        console.log("dataComparator ", date1 + " " + date2)
-        if (moment(date1).isAfter(moment(date2))) {
-          console.log("after")
-          return 1
+        if (moment(date1, "YYYY-MM-DD").isAfter(moment(date2, "YYYY-MM-DD"))) {
+            return 1;
         }
-        if (moment(date1).isBefore(moment(date2))) {
-          console.log("boefore")
-          return -1
-        }
-        console.log("equal")
-        return 0
+        if (moment(date1, "YYYY-MM-DD").isBefore(moment(date2, "YYYY-MM-DD"))) { 
+            return -1;
+        } 
+        return 0;
     }
 
    render () {

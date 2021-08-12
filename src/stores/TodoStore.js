@@ -41,13 +41,12 @@ export default Reflux.createStore({
     },
 
     sendInsertTodo() {
-        console.log("tesiting add")
-        const date = moment(new Date()).format('L')
-        const key = this.todoList.length
-        const todo = {key: '' + key, title:"nisse", description: "nasse", dueDate: date};
-        console.log("new ttot ", todo)
-       const message = {type: 'server/insert', data: todo}
-       SocketStore.sendMessage(message)
+        const date = moment(new Date()).format('YYYY-MM-DD')//format('L');
+        //key should normally be a databse id but creating a random key here
+        const key = Math.floor(Math.random() * 100000);
+        const todo = {key: '' + key, title: "title", description: "description", dueDate: date};
+        const message = {type: 'server/insert', data: todo};
+        SocketStore.sendMessage(message);
     },
 
     sendUpdateTodo(key ,field, value) {
