@@ -60,7 +60,12 @@ class App extends React.PureComponent {
     render () {
       console.log("render app ")
         return (
-          <div>
+          <div
+          style={{
+            position: 'absolute', left: '50%', top: '50%',
+            transform: 'translate(-50%, -50%)'
+          }}
+          >
             <Todo todoList={this.state.todoList} 
                   updateTodo={this.updateTodo} 
                   addTodo={this.addTodo} 
